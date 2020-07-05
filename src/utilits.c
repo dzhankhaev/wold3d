@@ -15,7 +15,7 @@ static char	*integer_to_string(int n)
 	if (!(arr = (char *)malloc(sizeof(char) * (i + 1))))
 	{
 		write(1, "Error in integer_to_string function in utilits.c\n",
-	1);
+	49);
 		exit(0);
 	}
 	arr[i--] = '\0';
