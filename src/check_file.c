@@ -1,33 +1,6 @@
 #include "wolf3d.h"
 
-/*
- * Выделит память и скопирует из str n символов, в конце поставит 0
- * Вернет выделенную память. Вернет 0 в случае ошибки выделения памяти.
- * От выхода за границы не защищена
- */
-static char	*copy_n_chars(const char *str, int n)
-{
-	char	*a;
-	int		i;
-
-	a = (char *)malloc(sizeof(char) * (n + 1));
-	if (!a)
-		return (0);
-	i = 0;
-	while (i < n)
-	{
-		a[i] = str[i];
-		i++;
-	}
-	a[i] = '\0';
-	return (a);
-}
-
-/*
- * Проверяет корректность карты.
- * Возвращает 0 в случае ошибки и 1 в случае успеха
- */
-static int	check_map(int i, const char *buf)
+int	check_map(int i, const char *buf)
 {
 	int		temp, k;
 
@@ -73,15 +46,17 @@ static int	check_map(int i, const char *buf)
 }
 
 /*
- * Проверяет корректность границ
- * Карта должна быть полностью ограничена границами
- * Возвращает 0 в случае ошибки и 1 в случае успеха
+ * Прочтет указанный файл и проверит его на ошибки
+ * Вернет прочитанный файл
+ * Выделяет память, нужно чистить
+ * ЧИТАЕТ ТОЛЬКО КВАДРАТНЫЕ КАРТЫ
  */
-static int	check_map_borders(int i, const char *buf)
+int	check_map_borders(int i, const char *buf)
 {
 	int		temp, k, q;
 
-	temp = buf[0] - '0';
+	//только квадратные карты
+	temp = get_map_size(buf).x;
 	//первая строка
 	k = 2;
 	q = 0;
@@ -123,22 +98,4 @@ static int	check_map_borders(int i, const char *buf)
 		k = (temp + 1) * q;
 	}
 	return (1);
-}
-
-char		*read_file(char *file_name)
-{
-	int		fd, i;
-	char	buf[100], *map;
-
-	if ((fd = open(file_name, O_RDONLY)) == -1)
-		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	if ((i = (int)read(fd, buf, 100)) == -1)
-		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	if (!check_map(i, buf))
-		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	if (!check_map_borders(i, buf))
-		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	if (!(map = copy_n_chars(buf, i)))
-		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	return (map);
 }

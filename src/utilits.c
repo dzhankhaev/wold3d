@@ -49,3 +49,12 @@ void		print_error_and_close_app(const char *file, const char *function,
 	write(1, " is not success finishing!\n", 27);
 	exit(0);
 }
+
+t_point	get_map_size(const char *map)
+{
+	t_point	a;
+
+	a.x = map[0] - '0';
+	a.y = map[0] - '0';
+	return (a);
+}
