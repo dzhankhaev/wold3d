@@ -3,6 +3,13 @@
 
 # define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 # define BUF_SIZE 100
+# define WIDTH 1280
+# define HEIGHT 720
+# define BPP 4
+# define ENDIAN 0
+# define FOV 60
+# define PLAYER_DIR 0
+# define STEP 0.001
 
 # include <stdio.h>
 # include <CL/cl.h>
@@ -12,17 +19,64 @@
 # include <math.h>
 # include "../minilibx/mlx.h"
 
+typedef struct	s_line
+{
+	int			x0;
+	int			y0;
+	int			x1;
+	int			y1;
+}				t_line;
+
+typedef struct	s_deltas
+{
+	int			dx;
+	int			dy;
+	int			error;
+	int			derror;
+
+}				t_deltas;
+
 typedef struct	s_point
 {
 	int			x;
 	int			y;
 }				t_point;
 
-typedef struct	s_player
+typedef struct	s_ray
 {
-	t_point		position;
+	double		x;
+	double		y;
+	double		length;
+}				t_ray;
 
-}				t_player;
+typedef struct	s_pl
+{
+	double		x;
+	double		y;
+	double		direction;
+	double		fov;
+}				t_pl;
+
+typedef struct	s_mlx
+{
+	int					width;
+	int					height;
+	int					bpp;
+	int					size;
+	int					endian;
+	void				*mlx;
+	void				*win;
+	void				*img;
+	char				*line;
+
+}				t_mlx;
+
+/*
+ * ray_cast.c
+ * Выделит память и вернёт массив лучей с координатами столкновений
+ * и длинами лучей
+ */
+t_ray	*find_ray_length(int width, t_point map_size, char *map, t_pl player);
 
 /*
  * utilits.c
@@ -66,4 +120,11 @@ int				check_map_borders(int i, const char *buf);
  * Тестовые. Распечатает карту.
  */
 void	print_map(char *map, t_point map_size);
+
+void	angle_more_than_45_2(t_line p, t_mlx *w);
+void	angle_less_than_45_2(t_line p, t_mlx *w);
+void	angle_more_than_45_1(t_line p, t_mlx *w);
+void	angle_less_than_45_1(t_line p, t_mlx *w);
+void			render_a_line(t_line p, t_mlx *w);
+
 #endif
