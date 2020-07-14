@@ -9,7 +9,7 @@
 # define ENDIAN 0
 # define FOV 60
 # define PLAYER_DIR 0
-# define STEP 0.001
+# define STEP 0.01
 
 # include <stdio.h>
 # include <CL/cl.h>
@@ -60,24 +60,44 @@ typedef struct	s_pl
 
 typedef struct	s_mlx
 {
-	int					width;
-	int					height;
-	int					bpp;
-	int					size;
-	int					endian;
-	void				*mlx;
-	void				*win;
-	void				*img;
-	char				*line;
-
+	int			width;
+	int			height;
+	int			bpp;
+	int			size;
+	int			endian;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*line;
 }				t_mlx;
+
+typedef struct	s_all
+{
+	t_mlx		*w;
+	t_pl		*player;
+	char		*map;
+	t_point		map_size;
+
+}				t_all;
+
+/*
+ * key_hooks.c
+ */
+int				key_hooks(int key, void *temp);
+
+/*
+ * draw_image.c
+ * Отрисует изображение в соответствии с текущей позицией и взглядом
+ */
+void			draw_image(t_mlx w, t_ray *ray);
 
 /*
  * ray_cast.c
  * Выделит память и вернёт массив лучей с координатами столкновений
  * и длинами лучей
  */
-t_ray	*find_ray_length(int width, t_point map_size, char *map, t_pl player);
+t_ray			*find_ray_length(int width, t_point map_size,
+		char *map, t_pl player);
 
 /*
  * utilits.c
@@ -122,10 +142,10 @@ int				check_map_borders(int i, const char *buf);
  */
 void	print_map(char *map, t_point map_size);
 
-void	angle_more_than_45_2(t_line p, t_mlx *w);
-void	angle_less_than_45_2(t_line p, t_mlx *w);
-void	angle_more_than_45_1(t_line p, t_mlx *w);
-void	angle_less_than_45_1(t_line p, t_mlx *w);
+void			angle_more_than_45_2(t_line p, t_mlx *w);
+void			angle_less_than_45_2(t_line p, t_mlx *w);
+void			angle_more_than_45_1(t_line p, t_mlx *w);
+void			angle_less_than_45_1(t_line p, t_mlx *w);
 void			render_a_line(t_line p, t_mlx *w);
 
 #endif

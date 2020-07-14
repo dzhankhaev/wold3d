@@ -41,7 +41,7 @@ t_ray	*find_ray_length(int win_width, t_point map_size,
 		player.direction = (player.direction - (double)(player.fov) / 2) +
 						   ((double)(player.fov * i) / win_width);
 		ray[i] = ray_cast(player, map, map_size.x);
-		ray[i].angle = player.direction;
+		ray[i].angle = t - player.direction;
 		player.direction = t;
 		i++;
 	}
