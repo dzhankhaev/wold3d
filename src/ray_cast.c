@@ -25,7 +25,8 @@ static t_ray	ray_cast(t_pl player, const char *map, int map_width)
 	return (ray);
 }
 
-t_ray	*find_ray_length(int win_width, t_point map_size, char *map, t_pl player)
+t_ray	*find_ray_length(int win_width, t_point map_size,
+		char *map, t_pl player)
 {
 	t_ray	*ray;
 	int		i;
@@ -40,6 +41,7 @@ t_ray	*find_ray_length(int win_width, t_point map_size, char *map, t_pl player)
 		player.direction = (player.direction - (double)(player.fov) / 2) +
 						   ((double)(player.fov * i) / win_width);
 		ray[i] = ray_cast(player, map, map_size.x);
+		ray[i].angle = player.direction;
 		player.direction = t;
 		i++;
 	}

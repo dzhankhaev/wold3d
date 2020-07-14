@@ -47,6 +47,7 @@ typedef struct	s_ray
 	double		x;
 	double		y;
 	double		length;
+	double		angle;
 }				t_ray;
 
 typedef struct	s_pl

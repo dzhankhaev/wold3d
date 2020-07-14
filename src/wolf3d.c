@@ -29,6 +29,11 @@ static void	init_player(t_pl *player, char *map, int map_width)
 	player->fov = (FOV * M_PI) / 180;
 }
 
+int			fish_eye_fix(int win_height, t_ray ray)
+{
+	return ((int)((double)win_height / (ray.length * cos(ray.angle))) / 2);
+}
+
 int 		main()
 {
 	char	*map;
@@ -43,58 +48,27 @@ int 		main()
 	ray = find_ray_length(w.width, map_size, map, player);
 
 
-/*
-	int j = 0;
+
+	int j;
 	int i = 0;
 	char	*temp;
+	char	*temp2;
 	int		length;
 
 	while (i < w.width)
 	{
 		temp = (char *)(w.line + (i * 4));
-		j = 0;
-		length = w.height - (int)(ray[i].length) * 30;
-		while (j < w.height)
+//		length = fish_eye_fix(w.height, ray[i]);
+		length = (int)((double)w.height / ray[i].length);
+		j = w.height / 2 - length / 2;
+		while (j < w.height / 2 + length / 2)
 		{
-			if (j < length)
-			{
-				temp[2] = (char)255;
-			}
-			else
-			{
-				temp[0] = (char)255;
-				temp[1] = (char)255;
-				temp[2] = (char)255;
-			}
+			temp2 = (char *)(temp + (w.width * 4 * j));
+			temp2[2] = (char)255;
 			j++;
-			temp = (char *)(temp + (w.width * 4));
 		}
 		i++;
 	}
-	i = 0;
-	while (i < w.width)
-	{
-		temp = (char *)(w.line + (i * 4));
-		j = 0;
-		length = (int)(ray[i].length) * 30;
-		while (j < w.height)
-		{
-			if (j > length)
-			{
-				temp[2] = (char)255;
-			}
-			else
-			{
-				temp[0] = (char)255;
-				temp[1] = (char)255;
-				temp[2] = (char)255;
-			}
-			j++;
-			temp = (char *)(temp + (w.width * 4));
-		}
-		i++;
-	}
-*/
 	mlx_put_image_to_window(w.mlx, w.win, w.img, 0, 0);
 	mlx_loop(w.mlx);
 	return (0);
