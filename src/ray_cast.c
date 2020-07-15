@@ -26,28 +26,28 @@ static char		wall_direction(char *map, double x, double y, int map_width)
 /*
  * Бросит луч. Вернет его длину, номер текстуры и координату столкновения
  */
-static t_ray	find_ray_length(t_pl player, char *map, int map_width)
+static t_ray	find_ray_length(double *length, t_pl player, char *map,
+		int map_width)
 {
-	double	c;
 	t_ray	ray;
 	double	x;
 	double	y;
 
-	c = 0;
+	*length = 0;
 	x = player.x;
 	y = player.y;
 	while (!(map[(int)x + (int)y * map_width] >= '1' &&
 	map[(int)x + (int)y * map_width] <= '9'))
 	{
-		x = player.x + c * cos(player.direction);
-		y = player.y + c * sin(player.direction);
-		c += RAY_STEP;
+		x = player.x + *length * cos(player.direction);
+		y = player.y + *length * sin(player.direction);
+		*length += RAY_STEP;
 	}
 //	ray.wall_dir = wall_direction(map, x, y, map_width);
 	ray.ntex = map[(int)x + (int)y * map_width];
-	ray.length = c;
-	if (ray.length < 1.0)
-		ray.length = 1.0;
+//раньше без этого условия сегалось, сейчас вроде нет. Надо проверить
+	if (*length < 1.0)
+		*length = 1.0;
 	return (ray);
 }
 
@@ -57,6 +57,7 @@ t_ray	*ray_cast(t_point win, t_point map_size,
 	t_ray	*ray;
 	int		i;
 	double	t;
+	double	length;
 
 	if (!(ray = (t_ray *)malloc(sizeof(t_ray) * win.x)))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
@@ -66,10 +67,10 @@ t_ray	*ray_cast(t_point win, t_point map_size,
 		t = player.direction;
 		player.direction = (player.direction - (double)(player.fov) / 2) +
 						   ((double)(player.fov * i) / win.x);
-		ray[i] = find_ray_length(player, map, map_size.x);
+		ray[i] = find_ray_length(&length, player, map, map_size.x);
 		ray[i].length = (int)((double)win.y /
-				(ray[i].length * cos(t - player.direction)));
-		if ((int)(ray[i].length) >= win.y)
+				(length * cos(t - player.direction)));
+		if (ray[i].length >= win.y)
 			ray[i].length = win.y;
 		player.direction = t;
 		i++;

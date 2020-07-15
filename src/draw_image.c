@@ -5,7 +5,7 @@ static void	draw_floor(char *temp, t_ray ray, int win_height, int win_width)
 	int		j;
 	char	*temp2;
 
-	j = win_height / 2 + (int)ray.length / 2;
+	j = win_height / 2 + ray.length / 2;
 	while (j < win_height)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
@@ -22,7 +22,7 @@ static void	draw_sky(char *temp, t_ray ray, int win_height, int win_width)
 	char	*temp2;
 
 	j = 0;
-	while (j < win_height / 2 - (int)ray.length / 2)
+	while (j < win_height / 2 - ray.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
 		temp2[0] = (char)(220 - j / 2);
@@ -37,8 +37,8 @@ static void	draw_walls(char *temp, t_ray ray, int win_height, int win_width)
 	int		j;
 	char	*temp2;
 
-	j = win_height / 2 - (int)ray.length / 2;
-	while (j < win_height / 2 + (int)ray.length / 2)
+	j = win_height / 2 - ray.length / 2;
+	while (j < win_height / 2 + ray.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
 		temp2[0] = (char)(27 * (ray.ntex + '0'));

@@ -48,7 +48,8 @@ typedef struct	s_point
 
 typedef struct	s_ray
 {
-	double		length;
+	int			length;
+	char		wall_dir;
 	char		ntex; //вид текстуры(стены)
 }				t_ray;
 
