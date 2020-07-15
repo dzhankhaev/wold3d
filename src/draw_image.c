@@ -1,15 +1,5 @@
 #include "wolf3d.h"
 
-static int	fish_eye_fix(int win_height, t_ray ray)
-{
-	int		column_height;
-
-	column_height = (int)((double)win_height / (ray.length * cos(ray.angle)));
-	if (column_height > win_height)
-		return (win_height);
-	return (column_height);
-}
-
 static void	draw_floor(char *temp, t_ray ray, int win_height, int win_width)
 {
 	int		j;
@@ -35,9 +25,9 @@ static void	draw_sky(char *temp, t_ray ray, int win_height, int win_width)
 	while (j < win_height / 2 - (int)ray.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
-		temp2[0] = (char)200;
-		temp2[1] = (char)140;
-		temp2[2] = (char)140;
+		temp2[0] = (char)(220 - j / 2);
+		temp2[1] = (char)(180 - j / 2);
+		temp2[2] = (char)(150 - j / 3);
 		j++;
 	}
 }
@@ -51,9 +41,9 @@ static void	draw_walls(char *temp, t_ray ray, int win_height, int win_width)
 	while (j < win_height / 2 + (int)ray.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
-		temp2[0] = (char)100;
-		temp2[1] = (char)140;
-		temp2[2] = (char)140;
+		temp2[0] = (char)(27 * (ray.ntex + '0'));
+		temp2[1] = (char)(27 * (ray.ntex + '0'));
+		temp2[2] = (char)(27 * (ray.ntex + '0'));
 		j++;
 	}
 }
@@ -67,9 +57,6 @@ void		draw_image(t_mlx w, t_ray *ray)
 	while (i < w.width)
 	{
 		temp = (char *)(w.line + (i * 4));
-		if (ray[i].length < 1)
-			ray[i].length = 1;
-		ray[i].length = (double)fish_eye_fix(w.height, ray[i]);
 		draw_sky(temp, ray[i], w.height, w.width);
 		draw_walls(temp, ray[i], w.height, w.width);
 		draw_floor(temp, ray[i], w.height, w.width);

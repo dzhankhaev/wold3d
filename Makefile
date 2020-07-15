@@ -10,8 +10,6 @@ SRC_LIST = wolf3d.c\
 	utilits.c\
 	check_file.c\
 	create_map.c\
-	minimap.c\
-	render_line.c\
 	ray_cast.c\
 	draw_image.c\
 	key_hooks.c\

@@ -7,6 +7,7 @@ void		player_rot(t_all *all, double rotate)
 	t_ray	*ray;
 	char	*map;
 	t_point	map_size;
+	t_point	win;
 
 	w = all->w;
 	player = all->player;
@@ -18,7 +19,9 @@ void		player_rot(t_all *all, double rotate)
 		player->direction = ((360 + rotate) * M_PI) / 180;
 	else
 		player->direction += (rotate * M_PI) / 180;
-	ray = ray_cast(w->width, map_size, map, *player);
+	win.x = w->width;
+	win.y = w->height;
+	ray = ray_cast(win, map_size, map, *player);
 	draw_image(*w, ray);
 	free(ray);
 }
@@ -40,6 +43,7 @@ void		player_step(t_all *all, double step)
 	t_point	map_size;
 	double	x;
 	double	y;
+	t_point	win;
 
 	w = all->w;
 	player = all->player;
@@ -51,7 +55,9 @@ void		player_step(t_all *all, double step)
 	player->y += step * sin(player->direction);
 	if (check_collision(map, map_size.x, player->x, player->y))
 	{
-		ray = ray_cast(w->width, map_size, map, *player);
+		win.x = w->width;
+		win.y = w->height;
+		ray = ray_cast(win, map_size, map, *player);
 		draw_image(*w, ray);
 		free(ray);
 		return ;

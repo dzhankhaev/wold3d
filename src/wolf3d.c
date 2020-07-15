@@ -37,15 +37,19 @@ int 		main()
 {
 	char	*map;
 	t_point	map_size;
+	t_point	win;
 	t_mlx	w;
 	t_pl	player;
 	t_all	all;
+	t_ray	*ray;
 
 
 	map = create_map("maps/map1", &map_size);
 	init_mlx(&w);
 	init_player(&player, map, map_size.x);
-	t_ray *ray = ray_cast(w.width, map_size, map, player);
+	win.x = w.width;
+	win.y = w.height;
+	ray = ray_cast(win, map_size, map, player);
 	draw_image(w, ray);
 	free(ray);
 	all.w = &w;

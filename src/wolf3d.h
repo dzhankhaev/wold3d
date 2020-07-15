@@ -10,8 +10,8 @@
 # define FOV 60
 # define PLAYER_DIR 0
 # define RAY_STEP 0.01
-# define PLAYER_STEP 0.1
-# define PLAYER_ROTATE 1
+# define PLAYER_STEP 0.05
+# define PLAYER_ROTATE 1.5
 # define TRUE 1
 # define FALSE 0
 
@@ -48,11 +48,8 @@ typedef struct	s_point
 
 typedef struct	s_ray
 {
-	double		x;
-	double		y;
 	double		length;
-	double		angle;
-	char		ntex;
+	char		ntex; //вид текстуры(стены)
 }				t_ray;
 
 typedef struct	s_pl
@@ -116,10 +113,10 @@ void			draw_image(t_mlx w, t_ray *ray);
 
 /*
  * ray_cast.c
- * Выделит память и вернёт массив лучей с координатами столкновений
- * и длинами лучей
+ * Выделит память и вернет массив с уже просчитаными длинами стен
+ * остаётся только отрисовать
  */
-t_ray			*ray_cast(int win_width, t_point map_size,
+t_ray			*ray_cast(t_point win, t_point map_size,
 						   char *map, t_pl player);
 
 /*
@@ -164,11 +161,5 @@ int				check_map_borders(int i, const char *buf);
  * Тестовые. Распечатает карту.
  */
 void	print_map(char *map, t_point map_size);
-
-void			angle_more_than_45_2(t_line p, t_mlx *w);
-void			angle_less_than_45_2(t_line p, t_mlx *w);
-void			angle_more_than_45_1(t_line p, t_mlx *w);
-void			angle_less_than_45_1(t_line p, t_mlx *w);
-void			render_a_line(t_line p, t_mlx *w);
 
 #endif
