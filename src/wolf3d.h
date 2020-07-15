@@ -11,7 +11,9 @@
 # define PLAYER_DIR 0
 # define RAY_STEP 0.01
 # define PLAYER_STEP 0.1
-# define PLAYER_ROTATE 5
+# define PLAYER_ROTATE 1
+# define TRUE 1
+# define FALSE 0
 
 # include <stdio.h>
 # include <CL/cl.h>
@@ -58,6 +60,10 @@ typedef struct	s_pl
 	double		y;
 	double		direction;
 	double		fov;
+	int			right;
+	int			left;
+	int			up;
+	int			down;
 }				t_pl;
 
 typedef struct	s_mlx
@@ -96,10 +102,11 @@ void			player_rot(t_all *all, double rotate);
 void			player_step(t_all *all, double step);
 
 /*
- * key_hooks.c
+ * hooks.c
  */
-int				key_hooks(int key, void *temp);
-
+int				key_press(int key, void *temp);
+int				key_release(int key, void *temp);
+int				loop_hooks(void *temp);
 /*
  * draw_image.c
  * Отрисует изображение в соответствии с текущей позицией и взглядом

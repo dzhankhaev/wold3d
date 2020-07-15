@@ -20,7 +20,7 @@ add_executable(${PROJECT_NAME}  src/wolf3d.c
                                 src/render_line.c
                                 src/ray_cast.c
                                 src/draw_image.c
-                                src/key_hooks.c
+        src/hooks.c
                                 src/move.c)
 
 target_link_libraries(${PROJECT_NAME} ${LIBX} ${FLAGS})

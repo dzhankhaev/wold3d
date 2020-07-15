@@ -27,6 +27,10 @@ static void	init_player(t_pl *player, char *map, int map_width)
 	player->y = i / map_width + 0.5;
 	player->direction = (PLAYER_DIR * M_PI) / 180;
 	player->fov = (FOV * M_PI) / 180;
+	player->right = FALSE;
+	player->left = FALSE;
+	player->up = FALSE;
+	player->down = FALSE;
 }
 
 int 		main()
@@ -48,7 +52,9 @@ int 		main()
 	all.player = &player;
 	all.map = map;
 	all.map_size = map_size;
-	mlx_key_hook(w.win, key_hooks, (void *)&all);
+	mlx_hook(w.win, 2, 1L << 0, key_press, (void *)&all);
+	mlx_hook(w.win, 3, 1L << 1, key_release, (void *)&all);
+	mlx_loop_hook(w.mlx, loop_hooks,(void *)&all);
 	mlx_loop(w.mlx);
 	return (0);
 }
