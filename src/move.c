@@ -18,7 +18,7 @@ void	player_rot(t_all *all, double rotate)
 		player->direction = ((360 + rotate) * M_PI) / 180;
 	else
 		player->direction += (rotate * M_PI) / 180;
-	ray = find_ray_length(w->width, map_size, map, *player);
+	ray = ray_cast(w->width, map_size, map, *player);
 	draw_image(*w, ray);
 	free(ray);
 }
@@ -37,7 +37,7 @@ void	player_step(t_all *all, double step)
 	map_size = all->map_size;
 	player->x += step * cos(player->direction);
 	player->y += step * sin(player->direction);
-	ray = find_ray_length(w->width, map_size, map, *player);
+	ray = ray_cast(w->width, map_size, map, *player);
 	draw_image(*w, ray);
 	free(ray);
 }

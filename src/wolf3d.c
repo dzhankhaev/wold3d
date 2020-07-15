@@ -21,7 +21,7 @@ static void	init_player(t_pl *player, char *map, int map_width)
 	int		i;
 
 	i = 0;
-	while (map[i] != '2')
+	while (map[i] != '0')
 		i++;
 	player->x = (double)(i % map_width) + 0.5;
 	player->y = i / map_width + 0.5;
@@ -45,15 +45,16 @@ int 		main()
 	map = create_map("maps/map1", &map_size);
 	init_mlx(&w);
 	init_player(&player, map, map_size.x);
-	t_ray *ray = find_ray_length(w.width, map_size, map, player);
+//	print_map(map, map_size);
+	t_ray *ray = ray_cast(w.width, map_size, map, player);
 	draw_image(w, ray);
 	free(ray);
 	all.w = &w;
 	all.player = &player;
 	all.map = map;
 	all.map_size = map_size;
-	mlx_hook(w.win, 2, 1L << 0, key_press, (void *)&all);
-	mlx_hook(w.win, 3, 1L << 1, key_release, (void *)&all);
+	mlx_hook(w.win, 2, 1L << 0, key_press, (void *)&player);
+	mlx_hook(w.win, 3, 1L << 1, key_release, (void *)&player);
 	mlx_loop_hook(w.mlx, loop_hooks,(void *)&all);
 	mlx_loop(w.mlx);
 	return (0);

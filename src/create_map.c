@@ -55,7 +55,8 @@ char	*create_map(char *file_name, t_point *map_size)
 
 	map_with_sizes = read_file(file_name);
 	*map_size = get_map_size(map_with_sizes);
-	if (!(map = (char *)malloc(sizeof(char) * (map_size->x * map_size->y + 1))))
+	if (!(map = (char *)malloc(sizeof(char) *
+			(map_size->x * map_size->y + 1))))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
 	map[map_size->x * map_size->y] = '\0';
 	i = 0;

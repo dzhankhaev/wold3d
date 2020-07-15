@@ -52,6 +52,7 @@ typedef struct	s_ray
 	double		y;
 	double		length;
 	double		angle;
+	char		ntex;
 }				t_ray;
 
 typedef struct	s_pl
@@ -104,8 +105,8 @@ void			player_step(t_all *all, double step);
 /*
  * hooks.c
  */
-int				key_press(int key, void *temp);
-int				key_release(int key, void *temp);
+int				key_press(int key, void *player);
+int				key_release(int key, void *player);
 int				loop_hooks(void *temp);
 /*
  * draw_image.c
@@ -118,8 +119,8 @@ void			draw_image(t_mlx w, t_ray *ray);
  * Выделит память и вернёт массив лучей с координатами столкновений
  * и длинами лучей
  */
-t_ray			*find_ray_length(int width, t_point map_size,
-		char *map, t_pl player);
+t_ray			*ray_cast(int win_width, t_point map_size,
+						   char *map, t_pl player);
 
 /*
  * utilits.c

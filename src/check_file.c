@@ -25,18 +25,17 @@ int	check_map(int i, const char *buf)
 		k++;
 	}
 	/*
-	 * 2 показывает изначальное положение
-	 * 1 стенки
-	 * 0 пустоты
+	 * 0 показывает изначальное положение
+	 * 1 - 9 стенки разных цветов
+	 * ' ' пустоты
 	 */
 	k = 2;
 	temp = 0;
 	while (k < i)
 	{
-		if (!(buf[k] == '0' || buf[k] == '1' || buf[k] == '2'
-		|| buf[k] == '\n'))
+		if (!(buf[k] >= '0' && buf[k] <= '9') && !(buf[k] == ' ' || buf[k] == '\n'))
 			return (0);
-		if (buf[k] == '2')
+		if (buf[k] == '0')
 			temp++;
 		k++;
 	}
@@ -62,7 +61,7 @@ int	check_map_borders(int i, const char *buf)
 	q = 0;
 	while (q < temp)
 	{
-		if (buf[k] != '1')
+		if (buf[k] < '1' || buf[k] > '9')
 			return (0);
 		q++;
 		k++;
@@ -72,7 +71,7 @@ int	check_map_borders(int i, const char *buf)
 	q = 0;
 	while (q < temp)
 	{
-		if (buf[k] != '1')
+		if (buf[k] < '1' || buf[k] > '9')
 			return (0);
 		q++;
 		k++;
@@ -82,7 +81,7 @@ int	check_map_borders(int i, const char *buf)
 	q = 1;
 	while (q < temp)
 	{
-		if (buf[k] != '1')
+		if (buf[k] < '1' || buf[k] > '9')
 			return (0);
 		k = 2 + (temp + 1) * q;
 		q++;
@@ -92,7 +91,7 @@ int	check_map_borders(int i, const char *buf)
 	k = (temp + 1) * q;
 	while (q < temp)
 	{
-		if (buf[k] != '1')
+		if (buf[k] < '1' || buf[k] > '9')
 			return (0);
 		q++;
 		k = (temp + 1) * q;
