@@ -17,7 +17,7 @@ static t_ray	ray_cast(t_pl player, const char *map, int map_width)
 	{
 		x = player.x + c * cos(player.direction);
 		y = player.y + c * sin(player.direction);
-		c += STEP;
+		c += RAY_STEP;
 	}
 	ray.x = x;
 	ray.y = y;

@@ -9,7 +9,9 @@
 # define ENDIAN 0
 # define FOV 60
 # define PLAYER_DIR 0
-# define STEP 0.01
+# define RAY_STEP 0.01
+# define PLAYER_STEP 0.1
+# define PLAYER_ROTATE 5
 
 # include <stdio.h>
 # include <CL/cl.h>
@@ -79,6 +81,19 @@ typedef struct	s_all
 	t_point		map_size;
 
 }				t_all;
+
+/*
+ * move.c
+ * Сменит направление относительно текущего на указанный угол в градусах
+ * Все поля структуры используются и должны быть заполнены
+ */
+void			player_rot(t_all *all, double rotate);
+/*
+ * move.c
+ * Сделает шаг. Вперёд - положительное число, назад - отрицательное
+ * Все поля структуры используются и должны быть заполнены
+ */
+void			player_step(t_all *all, double step);
 
 /*
  * key_hooks.c
