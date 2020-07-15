@@ -45,7 +45,6 @@ int 		main()
 	map = create_map("maps/map1", &map_size);
 	init_mlx(&w);
 	init_player(&player, map, map_size.x);
-//	print_map(map, map_size);
 	t_ray *ray = ray_cast(w.width, map_size, map, player);
 	draw_image(w, ray);
 	free(ray);
