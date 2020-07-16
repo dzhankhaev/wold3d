@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_map.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 /*
@@ -28,11 +40,12 @@ static char	*copy_n_chars(const char *str, int n)
  * Работает только на квадратные карты с одноразрядным размером
  * Выделит память и вернет строку с прочитанным файлом.
  */
-
 static char	*read_file(char *file_name)
 {
-	int		fd, i;
-	char	buf[BUF_SIZE], *map;
+	int		fd;
+	int		i;
+	char	buf[BUF_SIZE];
+	char	*map;
 
 	if ((fd = open(file_name, O_RDONLY)) == -1)
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
@@ -41,17 +54,20 @@ static char	*read_file(char *file_name)
 	close(fd);
 	if (!check_map(i, buf))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	if (!check_map_borders(i, buf))
+	if (!check_map_borders(buf))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
 	if (!(map = copy_n_chars(buf, i)))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
 	return (map);
 }
 
-char	*create_map(char *file_name, t_point *map_size)
+char		*create_map(char *file_name, t_point *map_size)
 {
-	int		i, j, k;
-	char	*map, *map_with_sizes;
+	int		i;
+	int		j;
+	int		k;
+	char	*map;
+	char	*map_with_sizes;
 
 	map_with_sizes = read_file(file_name);
 	*map_size = get_map_size(map_with_sizes);
@@ -65,10 +81,7 @@ char	*create_map(char *file_name, t_point *map_size)
 	{
 		j = 0;
 		while (j < map_size->x)
-		{
-			map[k++] = map_with_sizes[2 + j + i * (map_size->x + 1)];
-			j++;
-		}
+			map[k++] = map_with_sizes[2 + j++ + i * (map_size->x + 1)];
 		i++;
 	}
 	free(map_with_sizes);

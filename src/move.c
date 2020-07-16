@@ -1,16 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   move.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 void		player_rot(t_all *all, double rotate)
 {
-	t_mlx	*w;
+	t_mlx	w;
 	t_pl	*player;
 	t_wall	*wall;
 	char	*map;
 	t_point	map_size;
-	t_point	win;
 
 	w = all->w;
-	player = all->player;
+	player = &(all->player);
 	map = all->map;
 	map_size = all->map_size;
 	if (player->direction >= (360 * M_PI) / 180)
@@ -19,49 +30,39 @@ void		player_rot(t_all *all, double rotate)
 		player->direction = ((360 + rotate) * M_PI) / 180;
 	else
 		player->direction += (rotate * M_PI) / 180;
-	win.x = w->width;
-	win.y = w->height;
-	wall = ray_cast(win, map_size, map, *player);
-	draw_image(*w, wall);
+	wall = ray_cast(get_win_size(w), map_size, map, *player);
+	draw_image(w, wall);
 	free(wall);
 }
 
 static int	check_collision(const char *map, int map_width, double x, double y)
 {
-	if (!(map[(int)x + (int)y * map_width] >= '1' &&
-			 map[(int)x + (int)y * map_width] <= '9'))
+	if (map[(int)x + (int)y * map_width] != '1')
 		return (1);
 	return (0);
 }
 
 void		player_step(t_all *all, double step)
 {
-	t_mlx	*w;
+	t_mlx	w;
 	t_pl	*player;
 	t_wall	*wall;
 	char	*map;
 	t_point	map_size;
-	double	x;
-	double	y;
-	t_point	win;
 
 	w = all->w;
-	player = all->player;
+	player = &(all->player);
 	map = all->map;
 	map_size = all->map_size;
-	x = player->x;
-	y = player->y;
-	player->x += step * cos(player->direction);
-	player->y += step * sin(player->direction);
-	if (check_collision(map, map_size.x, player->x, player->y))
+	if (check_collision(map, map_size.x,
+			player->x + step * cos(player->direction),
+			player->y + step * sin(player->direction)))
 	{
-		win.x = w->width;
-		win.y = w->height;
-		wall = ray_cast(win, map_size, map, *player);
-		draw_image(*w, wall);
+		player->x += step * cos(player->direction);
+		player->y += step * sin(player->direction);
+		wall = ray_cast(get_win_size(w), map_size, map, *player);
+		draw_image(w, wall);
 		free(wall);
 		return ;
 	}
-	player->x = x;
-	player->y = y;
 }

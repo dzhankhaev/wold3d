@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_cast.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 /*
@@ -30,8 +42,7 @@ static t_wall	find_ray_length(double *length, t_pl player, char *map,
 	*length = 0;
 	x = player.x;
 	y = player.y;
-	while (!(map[(int)x + (int)y * map_width] >= '1' &&
-	map[(int)x + (int)y * map_width] <= '9'))
+	while (map[(int)x + (int)y * map_width] != '1')
 	{
 		x = player.x + *length * cos(player.direction);
 		y = player.y + *length * sin(player.direction);
@@ -41,8 +52,8 @@ static t_wall	find_ray_length(double *length, t_pl player, char *map,
 	return (wall);
 }
 
-t_wall	*ray_cast(t_point win, t_point map_size,
-				   char *map, t_pl player)
+t_wall			*ray_cast(t_point win, t_point map_size,
+	char *map, t_pl player)
 {
 	t_wall	*wall;
 	int		i;
@@ -56,10 +67,10 @@ t_wall	*ray_cast(t_point win, t_point map_size,
 	{
 		t = player.direction;
 		player.direction = (player.direction - (double)(player.fov) / 2) +
-						   ((double)(player.fov * i) / win.x);
+	((double)(player.fov * i) / win.x);
 		wall[i] = find_ray_length(&length, player, map, map_size.x);
 		wall[i].length = (int)((double)win.y /
-							   (length * cos(t - player.direction)));
+	(length * cos(t - player.direction)));
 		if (wall[i].length >= win.y)
 			wall[i].length = win.y;
 		player.direction = t;

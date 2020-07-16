@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf3d.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef WOLF3D_H
 # define WOLF3D_H
 
@@ -79,8 +91,8 @@ typedef struct	s_mlx
 
 typedef struct	s_all
 {
-	t_mlx		*w;
-	t_pl		*player;
+	t_mlx		w;
+	t_pl		player;
 	char		*map;
 	t_point		map_size;
 
@@ -117,7 +129,7 @@ void			draw_image(t_mlx w, t_wall *ray);
  * остаётся только отрисовать
  */
 t_wall			*ray_cast(t_point win, t_point map_size,
-						   char *map, t_pl player);
+	char *map, t_pl player);
 
 /*
  * utilits.c
@@ -133,7 +145,7 @@ void			print_error_and_close_app(const char *file,
  * Возвращает ширину x и высоту y
  */
 t_point			get_map_size(const char *map);
-
+t_point			get_win_size(t_mlx w);
 
 /*
  * create_map.c
@@ -141,7 +153,6 @@ t_point			get_map_size(const char *map);
  * Выделяет память под карту
  */
 char			*create_map(char *file_name, t_point *map_size);
-
 
 /*
  * check_file.c
@@ -155,11 +166,11 @@ int				check_map(int i, const char *buf);
  * Карта должна быть полностью ограничена границами
  * Возвращает 0 в случае ошибки и 1 в случае успеха
  */
-int				check_map_borders(int i, const char *buf);
+int				check_map_borders(const char *buf);
 
 /*
  * Тестовые. Распечатает карту.
  */
-void	print_map(char *map, t_point map_size);
+void			print_map(char *map, t_point map_size);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 #include "key_defines.h"
 
@@ -5,7 +17,7 @@ int				loop_hooks(void *temp)
 {
 	t_pl	*player;
 
-	player = ((t_all *)temp)->player;
+	player = &(((t_all *)temp)->player);
 	if (player->right == TRUE)
 		player_rot((t_all *)temp, PLAYER_ROTATE);
 	else if (player->left == TRUE)

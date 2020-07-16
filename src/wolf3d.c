@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf3d.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-static void	init_mlx(t_mlx *w)
+static void		init_mlx(t_mlx *w)
 {
 	w->width = WIDTH;
 	w->height = HEIGHT;
 	if (!(w->mlx = mlx_init()))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
 	if (!(w->win = mlx_new_window(w->mlx, w->width, w->height, "wolf3d")))
-		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);;
+		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
 	if (!(w->img = mlx_new_image(w->mlx, w->width, w->height)))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
 	w->bpp = BPP;
@@ -19,7 +31,7 @@ static void	init_mlx(t_mlx *w)
 /*
  * запишет позицию игрока и сотрет её из карты, заменив пустотой
  */
-static void	init_player(t_pl *player, char *map, int map_width)
+static void		init_player(t_pl *player, char *map, int map_width)
 {
 	int		i;
 
@@ -37,31 +49,22 @@ static void	init_player(t_pl *player, char *map, int map_width)
 	player->down = FALSE;
 }
 
-int 		main()
+int				main(void)
 {
-	char	*map;
-	t_point	map_size;
-	t_point	win;
-	t_mlx	w;
-	t_pl	player;
-	t_all	all;
 	t_wall	*wall;
+	t_all	all;
 
-	map = create_map("maps/map1", &map_size);
-	init_mlx(&w);
-	init_player(&player, map, map_size.x);
-	win.x = w.width;
-	win.y = w.height;
-	wall = ray_cast(win, map_size, map, player);
-	draw_image(w, wall);
+	all.map = create_map("maps/map1", &(all.map_size));
+	init_mlx(&(all.w));
+	init_player(&(all.player), all.map, all.map_size.x);
+	wall = ray_cast(get_win_size(all.w), all.map_size, all.map, all.player);
+	draw_image(all.w, wall);
 	free(wall);
-	all.w = &w;
-	all.player = &player;
-	all.map = map;
-	all.map_size = map_size;
-	mlx_hook(w.win, 2, 1L << 0, key_press, (void *)&player);
-	mlx_hook(w.win, 3, 1L << 1, key_release, (void *)&player);
-	mlx_loop_hook(w.mlx, loop_hooks,(void *)&all);
-	mlx_loop(w.mlx);
+	mlx_hook(all.w.win, 2, 1L << 0, key_press,
+			(void *)&(all.player));
+	mlx_hook(all.w.win, 3, 1L << 1, key_release,
+			(void *)&(all.player));
+	mlx_loop_hook(all.w.mlx, loop_hooks, (void *)&all);
+	mlx_loop(all.w.mlx);
 	return (0);
 }

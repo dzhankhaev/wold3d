@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utilits.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeulah <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/11 15:00:09 by abeulah           #+#    #+#             */
+/*   Updated: 2020/03/11 15:00:11 by abeulah          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 static char	*integer_to_string(int n)
 {
-	int		i, c;
+	int		i;
+	int		c;
 	char	*arr;
 
 	i = 0;
@@ -50,11 +63,20 @@ void		print_error_and_close_app(const char *file, const char *function,
 	exit(0);
 }
 
-t_point	get_map_size(const char *map)
+t_point		get_map_size(const char *map)
 {
 	t_point	a;
 
 	a.x = map[0] - '0';
 	a.y = map[0] - '0';
+	return (a);
+}
+
+t_point		get_win_size(t_mlx w)
+{
+	t_point	a;
+
+	a.x = w.width;
+	a.y = w.height;
 	return (a);
 }
