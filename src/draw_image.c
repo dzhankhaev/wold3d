@@ -12,12 +12,12 @@
 
 #include "wolf3d.h"
 
-static void	draw_floor(char *temp, t_wall ray, int win_height, int win_width)
+static void	draw_floor(char *temp, t_wall wall, int win_height, int win_width)
 {
 	int		j;
 	char	*temp2;
 
-	j = win_height / 2 + ray.length / 2;
+	j = win_height / 2 + wall.length / 2;
 	while (j < win_height)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
@@ -28,13 +28,13 @@ static void	draw_floor(char *temp, t_wall ray, int win_height, int win_width)
 	}
 }
 
-static void	draw_sky(char *temp, t_wall ray, int win_height, int win_width)
+static void	draw_sky(char *temp, t_wall wall, int win_height, int win_width)
 {
 	int		j;
 	char	*temp2;
 
 	j = 0;
-	while (j < win_height / 2 - ray.length / 2)
+	while (j < win_height / 2 - wall.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
 		temp2[0] = (char)(220 - j / 2);
@@ -60,18 +60,18 @@ static void	draw_walls(char *temp, t_wall wall, int win_height, int win_width)
 	}
 }
 
-void		draw_image(t_mlx w, t_wall *ray)
+void		draw_image(t_mlx w, t_wall *wall)
 {
-	int		i;
-	char	*temp;
+	int			i;
+	char		*temp;
 
 	i = 0;
 	while (i < w.width)
 	{
 		temp = (char *)(w.line + (i * 4));
-		draw_sky(temp, ray[i], w.height, w.width);
-		draw_walls(temp, ray[i], w.height, w.width);
-		draw_floor(temp, ray[i], w.height, w.width);
+		draw_sky(temp, wall[i], w.height, w.width);
+		draw_walls(temp, wall[i], w.height, w.width);
+		draw_floor(temp, wall[i], w.height, w.width);
 		i++;
 	}
 	mlx_put_image_to_window(w.mlx, w.win, w.img, 0, 0);

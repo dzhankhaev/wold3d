@@ -55,14 +55,14 @@ static t_wall	find_ray_length(double *length, t_pl player, char *map,
 t_wall			*ray_cast(t_point win, t_point map_size,
 	char *map, t_pl player)
 {
-	t_wall	*wall;
-	int		i;
-	double	t;
-	double	length;
+	t_wall		*wall;
+	int			i;
+	double		t;
+	double		length;
 
 	if (!(wall = (t_wall *)malloc(sizeof(t_wall) * win.x)))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	i = 0;
+	i = 1;
 	while (i < win.x)
 	{
 		t = player.direction;

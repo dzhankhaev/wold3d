@@ -121,7 +121,7 @@ int				loop_hooks(void *temp);
  * draw_image.c
  * Отрисует изображение в соответствии с текущей позицией и взглядом
  */
-void			draw_image(t_mlx w, t_wall *ray);
+void			draw_image(t_mlx w, t_wall *wall);
 
 /*
  * ray_cast.c
