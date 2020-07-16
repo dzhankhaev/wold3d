@@ -16,6 +16,9 @@ static void	init_mlx(t_mlx *w)
 	w->line = mlx_get_data_addr(w->img, &w->bpp, &w->size, &w->endian);
 }
 
+/*
+ * запишет позицию игрока и сотрет её из карты, заменив пустотой
+ */
 static void	init_player(t_pl *player, char *map, int map_width)
 {
 	int		i;
@@ -25,6 +28,7 @@ static void	init_player(t_pl *player, char *map, int map_width)
 		i++;
 	player->x = (double)(i % map_width) + 0.5;
 	player->y = i / map_width + 0.5;
+	map[i] = ' ';
 	player->direction = (PLAYER_DIR * M_PI) / 180;
 	player->fov = (FOV * M_PI) / 180;
 	player->right = FALSE;

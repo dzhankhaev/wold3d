@@ -3,25 +3,18 @@
 /*
  * Определит направление участка стены. 1 - север, 2 - юг, 3 - запад, 4 - восток
  */
-/* не работает
 static char		wall_direction(char *map, double x, double y, int map_width)
 {
-	if (x <= 0.9999)
-		x = 1;
-	if (y <= 0.9999)
-		y = 1;
-	if (map[(int)x + (int)(y - 0.1) * map_width] == ' ')
+	if (map[(int)x + (int)(y - RAY_STEP) * map_width] == ' ')
 		return ('1');
-	else if (map[(int)x + (int)(y + 0.1) * map_width] == ' ')
+	else if (map[(int)x + (int)(y + RAY_STEP) * map_width] == ' ')
 		return ('2');
-	else if (map[(int)(x - 0.1) + (int)y * map_width] == ' ')
+	else if (map[(int)(x - RAY_STEP) + (int)y * map_width] == ' ')
 		return ('3');
-	else if (map[(int)(x + 0.1) + (int)y * map_width] == ' ')
+	else if (map[(int)(x + RAY_STEP) + (int)y * map_width] == ' ')
 		return ('4');
-	write(1, "! ", 2);
 	return (0);
 }
-*/
 
 /*
  * Бросит луч. Вернет его длину, номер текстуры и координату столкновения
@@ -43,7 +36,7 @@ static t_ray	find_ray_length(double *length, t_pl player, char *map,
 		y = player.y + *length * sin(player.direction);
 		*length += RAY_STEP;
 	}
-//	ray.wall_dir = wall_direction(map, x, y, map_width);
+	ray.wall_dir = wall_direction(map, x, y, map_width);
 	ray.ntex = map[(int)x + (int)y * map_width];
 //раньше без этого условия сегалось, сейчас вроде нет. Надо проверить
 	if (*length < 1.0)

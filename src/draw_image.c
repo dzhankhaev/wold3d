@@ -41,9 +41,9 @@ static void	draw_walls(char *temp, t_ray ray, int win_height, int win_width)
 	while (j < win_height / 2 + ray.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
-		temp2[0] = (char)(27 * (ray.ntex + '0'));
-		temp2[1] = (char)(27 * (ray.ntex + '0'));
-		temp2[2] = (char)(27 * (ray.ntex + '0'));
+		temp2[0] = (char)(27 * (ray.wall_dir + '0'));
+		temp2[1] = (char)(27 * (ray.wall_dir + '0'));
+		temp2[2] = (char)(27 * (ray.wall_dir + '0'));
 		j++;
 	}
 }
