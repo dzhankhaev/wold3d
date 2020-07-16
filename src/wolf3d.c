@@ -45,17 +45,16 @@ int 		main()
 	t_mlx	w;
 	t_pl	player;
 	t_all	all;
-	t_ray	*ray;
-
+	t_wall	*wall;
 
 	map = create_map("maps/map1", &map_size);
 	init_mlx(&w);
 	init_player(&player, map, map_size.x);
 	win.x = w.width;
 	win.y = w.height;
-	ray = ray_cast(win, map_size, map, player);
-	draw_image(w, ray);
-	free(ray);
+	wall = ray_cast(win, map_size, map, player);
+	draw_image(w, wall);
+	free(wall);
 	all.w = &w;
 	all.player = &player;
 	all.map = map;

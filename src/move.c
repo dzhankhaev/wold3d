@@ -4,7 +4,7 @@ void		player_rot(t_all *all, double rotate)
 {
 	t_mlx	*w;
 	t_pl	*player;
-	t_ray	*ray;
+	t_wall	*wall;
 	char	*map;
 	t_point	map_size;
 	t_point	win;
@@ -21,9 +21,9 @@ void		player_rot(t_all *all, double rotate)
 		player->direction += (rotate * M_PI) / 180;
 	win.x = w->width;
 	win.y = w->height;
-	ray = ray_cast(win, map_size, map, *player);
-	draw_image(*w, ray);
-	free(ray);
+	wall = ray_cast(win, map_size, map, *player);
+	draw_image(*w, wall);
+	free(wall);
 }
 
 static int	check_collision(const char *map, int map_width, double x, double y)
@@ -38,7 +38,7 @@ void		player_step(t_all *all, double step)
 {
 	t_mlx	*w;
 	t_pl	*player;
-	t_ray	*ray;
+	t_wall	*wall;
 	char	*map;
 	t_point	map_size;
 	double	x;
@@ -57,9 +57,9 @@ void		player_step(t_all *all, double step)
 	{
 		win.x = w->width;
 		win.y = w->height;
-		ray = ray_cast(win, map_size, map, *player);
-		draw_image(*w, ray);
-		free(ray);
+		wall = ray_cast(win, map_size, map, *player);
+		draw_image(*w, wall);
+		free(wall);
 		return ;
 	}
 	player->x = x;

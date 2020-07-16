@@ -12,7 +12,7 @@ SRC_LIST = wolf3d.c\
 	create_map.c\
 	ray_cast.c\
 	draw_image.c\
-	key_hooks.c\
+	hooks.c\
 	move.c\
 
 HEADERS = $(addprefix $(SRC_DIR), $(HEADER_LIST))

@@ -46,12 +46,11 @@ typedef struct	s_point
 	int			y;
 }				t_point;
 
-typedef struct	s_ray
+typedef struct	s_wall
 {
 	int			length;
-	char		wall_dir;
-	char		ntex; //вид текстуры(стены)
-}				t_ray;
+	char		dir;
+}				t_wall;
 
 typedef struct	s_pl
 {
@@ -110,14 +109,14 @@ int				loop_hooks(void *temp);
  * draw_image.c
  * Отрисует изображение в соответствии с текущей позицией и взглядом
  */
-void			draw_image(t_mlx w, t_ray *ray);
+void			draw_image(t_mlx w, t_wall *ray);
 
 /*
  * ray_cast.c
  * Выделит память и вернет массив с уже просчитаными длинами стен
  * остаётся только отрисовать
  */
-t_ray			*ray_cast(t_point win, t_point map_size,
+t_wall			*ray_cast(t_point win, t_point map_size,
 						   char *map, t_pl player);
 
 /*
