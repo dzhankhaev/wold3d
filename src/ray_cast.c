@@ -12,97 +12,98 @@
 
 #include "wolf3d.h"
 
-/*
- * Определит направление участка стены. 1 - север, 2 - юг, 3 - запад, 4 - восток
- */
-static char		wall_direction(char *map, double x, double y, int map_width)
+static double	y_walk(t_pl player, int map_width, char *map, char *wall_dir)
 {
-	if (map[(int)x + (int)(y - RAY_STEP) * map_width] == ' ')
-		return ('1');
-	else if (map[(int)x + (int)(y + RAY_STEP) * map_width] == ' ')
-		return ('2');
-	else if (map[(int)(x - RAY_STEP) + (int)y * map_width] == ' ')
-		return ('3');
-	else if (map[(int)(x + RAY_STEP) + (int)y * map_width] == ' ')
-		return ('4');
-	return ('0');
-}
-
-double rad(double a)
-{
-	return ((a * M_PI) / 180);
-}
-
-/*
- * Бросит луч. Вернет номер текстуры и направление стены
- * В указателе length будет записана длина луча
- */
-static t_wall	find_ray_length(double *length, t_pl player, char *map,
-		int map_width)
-{
-	t_wall	wall;
 	double	x;
 	double	y;
-	double 	x2;
-	double 	y2;
+	int		i;
 
-	*length = 0;
-
-	if (player.direction == 0)
-		player.direction += rad(0.1);
-	if (player.direction == rad(90))
-		player.direction += rad(0.1);
-	if (player.direction == rad(180))
-		player.direction += rad(0.1);
-	if (player.direction == rad(270))
-		player.direction += rad(0.1);
 	x = 0;
 	y = 0;
-	x2 = 0;
-	y2 = 0;
-	int i = 1;
-	int k = 0;
-	while (map[(int)(x + player.x) + (int)(y + player.y - k) * map_width] != '1')
+	i = 1;
+	while (map[(int)(x + player.x) + (int)(y + player.y) * map_width] != '1')
 	{
-		if (player.direction > rad(180) || player.direction < 0)
+		//опять виновата норма
+		//при выполнении этого условия в условии цикла от y надо отнять 1, но места для строк нет
+		//- 0.000000001 вообще не нужно
+		if (player.direction > RAD180 || player.direction < 0)
 		{
-			y = -1 * (player.y - ((int)(player.y + 1) - i));
-			k = 1;
+			y = -1 * (player.y - ((int)(player.y + 1) - i)) - 0.000000001;
+			*wall_dir = '1';
 		}
 		else
 		{
 			y = (int)(player.y) + i - player.y;
-			k = 0;
+			*wall_dir = '3';
 		}
 		x = y / tan(player.direction);
 		if ((int)(x + player.x) >= map_width || (int)(x + player.x) <= 0)
 			break ;
 		i++;
 	}
+	return (sqrt(y * y + x * x));
+}
+
+static double	x_walk(t_pl player, int map_width, char *map, char *wall_dir)
+{
+	double	x;
+	double	y;
+	int		i;
+
+	x = 0;
+	y = 0;
 	i = 1;
-	k = 0;
-	while (map[(int)(x2 + player.x - k) + (int)(y2 + player.y) * map_width] != '1')
+	while (map[(int)(x + player.x) + (int)(y + player.y) * map_width] != '1')
 	{
-		if (player.direction > rad(90) && player.direction < rad(270))
+		if (player.direction > RAD90 && player.direction < RAD270)
 		{
-			x2 = -1 * (player.x - ((int)(player.x + 1) - i));
-			k = 1;
+			x = -1 * (player.x - ((int)(player.x + 1) - i)) - 0.000000001;
+			*wall_dir = '4';
 		}
 		else
 		{
-			x2 = (int)(player.x) + i - player.x;
-			k = 0;
+			x = (int)(player.x) + i - player.x;
+			*wall_dir = '2';
 		}
-		y2 = x2 * tan(player.direction);
-		if ((int)(y2 + player.y) >= map_width || (int)(y2 + player.y) <= 0)
+		y = x * tan(player.direction);
+		if ((int)(y + player.y) >= map_width || (int)(y + player.y) <= 0)
 			break ;
 		i++;
 	}
-	if (sqrt(y * y + x * x) < sqrt(x2 * x2 + y2 * y2))
-		*length = sqrt(y * y + x * x);
+	return (sqrt(y * y + x * x));
+}
+
+/*
+ * Бросит луч. Вернет номер текстуры и направление стены
+ * В указателе length будет записана длина луча
+ * 1 - север, 2 - восток, 3 - юг, 4 - запад
+ */
+static t_wall	find_ray_length(double *length, t_pl player, char *map,
+		int map_width)
+{
+	t_wall	wall;
+	double 	tempx;
+	double 	tempy;
+	char	wall_dir1;
+	char	wall_dir2;
+
+	*length = 0;
+	if (player.direction == RAD90)
+		player.direction += RAD0_1;
+	if (player.direction == RAD270)
+		player.direction += RAD0_1;
+	tempx = x_walk(player, map_width, map, &wall_dir1);
+	tempy = y_walk(player, map_width, map, &wall_dir2);
+	if (tempx < tempy)
+	{
+		*length = tempx;
+		wall.dir = wall_dir1;
+	}
 	else
-		*length = sqrt(x2 * x2 + y2 * y2);
-	wall.dir = '8';
+	{
+		*length = tempy;
+		wall.dir = wall_dir2;
+	}
 	return (wall);
 }
 
@@ -113,19 +114,18 @@ t_wall			*ray_cast(t_point win, t_point map_size,
 	int			i;
 	double		t;
 	double		length;
-
-	if (!(wall = (t_wall *)malloc(sizeof(t_wall) * win.x)))
+//ради 25 строк i инициализируется так
+	if ((i = 0) || !(wall = (t_wall *)malloc(sizeof(t_wall) * win.x)))
 		print_error_and_close_app(__FILE__, __FUNCTION__, __LINE__);
-	i = 0;
 	while (i < win.x)
 	{
 		t = player.direction;
 		player.direction = (player.direction - (double)(player.fov) / 2) +
 	((double)(player.fov * i) / win.x);
 		if (player.direction < 0)
-			player.direction = rad(360) + player.direction;
-		if (player.direction > rad(360))
-			player.direction -= rad(360);
+			player.direction = RAD360 + player.direction;
+		if (player.direction > RAD360)
+			player.direction -= RAD360;
 		wall[i] = find_ray_length(&length, player, map, map_size.x);
 		wall[i].length = (int)((double)win.y /
 	(length * cos(t - player.direction)));

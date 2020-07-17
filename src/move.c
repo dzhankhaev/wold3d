@@ -24,7 +24,7 @@ void		player_rot(t_all *all, double rotate)
 	player = &(all->player);
 	map = all->map;
 	map_size = all->map_size;
-	if (player->direction >= (360 * M_PI) / 180)
+	if (player->direction >= RAD360)
 		player->direction = (rotate * M_PI) / 180;
 	else if (player->direction <= 0)
 		player->direction = ((360 + rotate) * M_PI) / 180;

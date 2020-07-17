@@ -53,9 +53,9 @@ static void	draw_walls(char *temp, t_wall wall, int win_height, int win_width)
 	while (j < win_height / 2 + wall.length / 2)
 	{
 		temp2 = (char *)(temp + (win_width * 4 * j));
-		temp2[0] = (char)(20 * (wall.dir - '0'));
-		temp2[1] = (char)(20 * (wall.dir - '0'));
-		temp2[2] = (char)(20 * (wall.dir - '0'));
+		temp2[0] = (char)(27 * (wall.dir - '0'));
+		temp2[1] = (char)(27 * (wall.dir - '0'));
+		temp2[2] = (char)(27 * (wall.dir - '0'));
 		j++;
 	}
 }

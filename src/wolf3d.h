@@ -19,12 +19,16 @@
 # define BPP 4
 # define ENDIAN 0
 # define FOV 60
-# define PLAYER_DIR 90
-# define RAY_STEP 0.01
+# define PLAYER_DIR 0
 # define PLAYER_STEP 0.05
 # define PLAYER_ROTATE 1.5
 # define TRUE 1
 # define FALSE 0
+# define RAD90 1.570796
+# define RAD180 3.141593
+# define RAD270 4.712389
+# define RAD360 6.283185
+# define RAD0_1 0.001745
 
 # include <stdio.h>
 # include <CL/cl.h>
@@ -33,7 +37,6 @@
 # include <stdlib.h>
 # include <math.h>
 # include "../minilibx/mlx.h"
-
 typedef struct	s_line
 {
 	int			x0;
