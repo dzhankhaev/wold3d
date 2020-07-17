@@ -55,8 +55,8 @@ void		player_step(t_all *all, double step)
 	map = all->map;
 	map_size = all->map_size;
 	if (check_collision(map, map_size.x,
-			player->x + step * cos(player->direction),
-			player->y + step * sin(player->direction)))
+			player->x + (step + step / 100) * cos(player->direction),
+			player->y + (step + step / 100) * sin(player->direction)))
 	{
 		player->x += step * cos(player->direction);
 		player->y += step * sin(player->direction);
