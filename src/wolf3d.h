@@ -13,7 +13,6 @@
 #ifndef WOLF3D_H
 # define WOLF3D_H
 
-# define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 # define BUF_SIZE 100
 # define WIDTH 1280
 # define HEIGHT 720
